@@ -1,0 +1,94 @@
+body {
+  font-family: 'Georgia', serif;
+  background-color: #f8f3e8;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto; /* memungkinkan scroll jika tinggi melebihi layar */
+  box-sizing: border-box;
+}
+
+.typing-container {
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  background: #fff9e6;
+  border: 1px solid #e0d5c0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.message {
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: justify;
+  white-space: pre-line;
+}
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 20px;
+  background-color: #333;
+  animation: blink 0.8s infinite;
+  vertical-align: bottom;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 8px;
+  height: 16px;
+  opacity: 0.8;
+  border-radius: 2px;
+  animation: drop linear forwards;
+}
+
+@keyframes drop {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive untuk HP */
+@media (max-width: 600px) {
+  .typing-container {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .message {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .cursor {
+    height: 18px;
+  }
+}
