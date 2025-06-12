@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Harvey's Birthday</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/index-styles.css">
+</head>
+<body>
+  <div class="photo-above">
+    <img src="asset/happy-birthday.png" alt="Happy Birthday Harvey" width="683" height="384">
+  </div>
+  <div class="ipod-container">
+    
+    <div class="ipod-screen">
+      <img
+        src="https://placehold.co/80x80/3b82f6/ffffff?text=Album+Art"
+        alt="Album Art"
+        class="album-art"
+        width="80"
+        height="80"
+      />
+      <div class="album-title">
+        Select Song
+      </div>
+      <div class="artist-name">
+        iPod Classic
+      </div>
+      <div class="progress-bar">
+        <span class="current-time">0:00</span>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <span class="duration">0:00</span>
+      </div>
+    </div>
+    
+    <div class="click-wheel">
+      <div class="wheel-label">
+        MUSIC
+      </div>
+      <div class="wheel-outer">
+        <div class="wheel-inner"></div>
+      </div>
+      
+      <div class="controls-container">
+        <button
+          aria-label="Previous"
+          class="control-btn prev-btn"
+          id="prev-btn"
+        >
+          <i class="fas fa-backward"></i>
+        </button>
+        <button
+          aria-label="Play/Pause"
+          class="control-btn play-btn"
+          id="play-btn"
+        >
+          <i class="fas fa-play"></i>
+        </button>
+        <button
+          aria-label="Next"
+          class="control-btn next-btn"
+          id="next-btn"
+        >
+          <i class="fas fa-forward"></i>
+        </button>
+      </div>
+    </div>
+    
+    <audio id="audio-player"></audio>
+  </div>
+
+  <div class="folder-grid">
+    <a href="footprints.html" class="folder-item">
+      <img src="asset/folder.png" alt="Folder 1">
+      <span>Memories</span>
+    </a>
+    <a href="letter.html" class="folder-item">
+      <img src="asset/folder.png" alt="Folder 2">
+      <span>Messages</span>
+    </a>
+    <a href="blessings.html" class="folder-item">
+      <img src="asset/folder.png" alt="Folder 3">
+      <span>Wishes</span>
+    </a>
+  </div>
+
+  <div class="photo-grid">
+    <div class="photo-item">
+      <img src="asset/photo-1.jpg" alt="Photo 1">
+    </div>
+    <div class="photo-item">
+      <img src="asset/photo-2.jpg" alt="Photo 2">
+    </div>
+    <div class="photo-item">
+      <img src="asset/photo-3.jpg" alt="Photo 3">
+    </div>
+    <div class="photo-item">
+      <img src="asset/photo-4.jpg" alt="Photo 4">
+    </div>
+  </div>
+
+  <script>
+    
+    const songs = [
+      {
+        title: "Happy Birthday",
+        artist: "Cocomelon",
+        albumArt: "asset/cover-1.jpg",
+        duration: "1:02",
+        audioSrc: "asset/lagu-1.mp3"
+      },
+      {
+        title: "Selamat Ulang Tahun",
+        artist: "Jamrud",
+        albumArt: "asset/cover-2.jpg",
+        duration: "2:46",
+        audioSrc: "asset/lagu-2.mp3"
+      },
+      {
+        title: "Serta Mulia",
+        artist: "Sal Priadi",
+        albumArt: "asset/cover-3.jpg",
+        duration: "3:09",
+        audioSrc: "asset/lagu-3.mp3"
+      },
+      {
+        title: "Make a Wish",
+        artist: "NCT U",
+        albumArt: "asset/cover-4.jpg",
+        duration: "3:49",
+        audioSrc: "asset/lagu-4.mp3"
+      },
+      {
+        title: "Happy Birthday To You",
+        artist: "JOY",
+        albumArt: "asset/cover-5.jpg",
+        duration: "2:54",
+        audioSrc: "asset/lagu-5.mp3"
+      }
+    ];
+    
+    const audioPlayer = document.getElementById('audio-player');
+    const playBtn = document.getElementById('play-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const albumArt = document.querySelector('.album-art');
+    const albumTitle = document.querySelector('.album-title');
+    const artistName = document.querySelector('.artist-name');
+    const progressFill = document.querySelector('.progress-fill');
+    const currentTimeEl = document.querySelector('.current-time');
+    const durationEl = document.querySelector('.duration');
+    
+    let currentSongIndex = 0;
+    let isPlaying = false;
+    
+    function loadSong(songIndex) {
+      const song = songs[songIndex];
+      audioPlayer.src = song.audioSrc;
+      albumArt.src = song.albumArt;
+      albumArt.alt = `${song.title} album art`;
+      albumTitle.textContent = song.title;
+      artistName.textContent = song.artist;
+      durationEl.textContent = song.duration;
+      
+      progressFill.style.width = '0%';
+      currentTimeEl.textContent = '0:00';
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        audioPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+      } else {
+        audioPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      }
+      isPlaying = !isPlaying;
+    }
+    
+    function updateProgress() {
+      const { currentTime, duration } = audioPlayer;
+      const progressPercent = (currentTime / duration) * 100;
+      progressFill.style.width = `${progressPercent}%`;
+      
+      const currentMinutes = Math.floor(currentTime / 60);
+      const currentSeconds = Math.floor(currentTime % 60).toString().padStart(2, '0');
+      currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+    }
+
+    function prevSong() {
+      currentSongIndex--;
+      if (currentSongIndex < 0) {
+        currentSongIndex = songs.length - 1;
+      }
+      loadSong(currentSongIndex);
+      if (isPlaying) {
+        audioPlayer.play();
+      }
+    }
+    
+    function nextSong() {
+      currentSongIndex++;
+      if (currentSongIndex > songs.length - 1) {
+        currentSongIndex = 0;
+      }
+      loadSong(currentSongIndex);
+      if (isPlaying) {
+        audioPlayer.play();
+      }
+    }
+    
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('ended', nextSong);
+    
+    loadSong(currentSongIndex);
+  </script>
+</body>
+</html>

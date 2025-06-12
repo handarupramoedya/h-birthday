@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blessings</title>
+  <link rel="stylesheet" href="css/blessings-styles.css"/>
+</head>
+<body>
+  <div class="confetti"></div>
+
+  <div class="typing-container">
+    <div class="message">
+      <span class="typed-text"></span><span class="cursor">|</span>
+    </div>
+  </div>
+
+  <script>
+    
+function createConfetti() {
+  const confettiContainer = document.querySelector('.confetti');
+  for (let i = 0; i < 150; i++) {
+    const piece = document.createElement('span');
+    piece.classList.add('confetti-piece');
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.animationDuration = 2 + Math.random() * 3 + 's';
+    piece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    confettiContainer.appendChild(piece);
+  }
+}
+
+
+const text = `Selamat ulang tahun yang ke-21. Selamat menjejak usia yang baru. Semoga langkahmu semakin ringan dan hatimu semakin penuh dengan hal-hal yang baik dan tulus.
+
+Selamat bertumbuh, selamat menemukan. Semesta bersorak untukmu hari ini karena dunia telah mengenal satu jiwa indah yang genap dewasa. Semoga doa-doamu satu per satu menemukan jalan pulang. Semoga hatimu dijaga dari kecewa yang terlalu dalam, dan bahagiamu selalu datang.
+
+Dunia mungkin tidak selalu ramah, tetapi semoga engkau selalu memiliki alasan untuk tersenyum dan tempat yang membuatmu merasa pulang. Serta mulia panjang usiamu, dalam lindung kasih-Nya yang tak pernah putus.
+
+Dengan sayang, DK`;
+
+let i = 0;
+const speed = 35;
+const typedText = document.querySelector('.typed-text');
+
+function type() {
+  if (i < text.length) {
+    typedText.textContent += text.charAt(i);
+    i++;
+    setTimeout(type, speed);
+  } else {
+    document.querySelector('.cursor').style.display = 'none';
+  }
+}
+
+window.onload = () => {
+  createConfetti();
+  setTimeout(type, 1000); // delay sebentar setelah confetti
+};
+
+  </script>
+</body>
+</html>

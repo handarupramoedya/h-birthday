@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footprints</title>
+    <link rel="stylesheet" href="css/footprints-styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Hmmm... is it a birthday movie?</h1>
+        <div class="video-container">
+            <video id="myVideo">
+                <source src="asset/birthday-movie.mp4" type="video/mp4">
+            </video>
+            
+            <div class="controls">
+                <div class="progress-container">
+                    <div class="progress" id="progress"></div>
+                </div>
+                
+                <div class="buttons">
+                    <button id="playBtn">▶</button>
+                    <button id="muteBtn">🔊</button>
+                    
+                    <div class="volume-container">
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1" value="1">
+                    </div>
+                    
+                    <span class="time" id="timeDisplay">00:00 / 00:00</span>
+                    
+                    <button id="fullscreenBtn" class="fullscreen">⛶</button>
+                    
+                    <select id="playbackRate">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('myVideo');
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const progress = document.getElementById('progress');
+    const progressContainer = document.querySelector('.progress-container');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const playbackRate = document.getElementById('playbackRate');
+    
+    // Play/Pause button
+    playBtn.addEventListener('click', togglePlay);
+    video.addEventListener('click', togglePlay);
+    
+    function togglePlay() {
+        if (video.paused) {
+            video.play();
+            playBtn.textContent = '❚❚';
+        } else {
+            video.pause();
+            playBtn.textContent = '▶';
+        }
+    }
+    
+    // Mute button
+    muteBtn.addEventListener('click', toggleMute);
+    
+    function toggleMute() {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    }
+    
+    // Volume slider
+    volumeSlider.addEventListener('input', function() {
+        video.volume = this.value;
+        video.muted = false;
+        muteBtn.textContent = '🔊';
+    });
+    
+    // Progress bar
+    video.addEventListener('timeupdate', updateProgress);
+    
+    function updateProgress() {
+        const percent = (video.currentTime / video.duration) * 100;
+        progress.style.width = `${percent}%`;
+        
+        // Update time display
+        const currentMinutes = Math.floor(video.currentTime / 60);
+        const currentSeconds = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
+        const durationMinutes = Math.floor(video.duration / 60);
+        const durationSeconds = Math.floor(video.duration % 60).toString().padStart(2, '0');
+        
+        timeDisplay.textContent = `${currentMinutes}:${currentSeconds} / ${durationMinutes}:${durationSeconds}`;
+    }
+    
+    // Click on progress bar to seek
+    progressContainer.addEventListener('click', function(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = video.duration;
+        
+        video.currentTime = (clickX / width) * duration;
+    });
+    
+    // Fullscreen button
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.querySelector('.video-container').requestFullscreen().catch(err => {
+                alert(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+    
+    // Playback rate
+    playbackRate.addEventListener('change', function() {
+        video.playbackRate = this.value;
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        switch(e.code) {
+            case 'Space':
+                e.preventDefault();
+                togglePlay();
+                break;
+            case 'ArrowRight':
+                video.currentTime += 5;
+                break;
+            case 'ArrowLeft':
+                video.currentTime -= 5;
+                break;
+            case 'ArrowUp':
+                if (video.volume < 1) {
+                    video.volume = Math.min(video.volume + 0.1, 1);
+                    volumeSlider.value = video.volume;
+                }
+                break;
+            case 'ArrowDown':
+                if (video.volume > 0) {
+                    video.volume = Math.max(video.volume - 0.1, 0);
+                    volumeSlider.value = video.volume;
+                }
+                break;
+            case 'KeyM':
+                toggleMute();
+                break;
+            case 'KeyF':
+                toggleFullscreen();
+                break;
+        }
+    });
+    
+    // Initialize
+    video.volume = volumeSlider.value;
+});
+    </script>
+</body>
+</html>

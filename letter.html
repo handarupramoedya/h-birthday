@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A letter</title>
+    <link rel="stylesheet" href="css/letter-styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="envelope" id="envelope">
+            <div class="stamp">SPECIAL<br>DELIVERY</div>
+        </div>
+        <div class="letter" id="letter">
+            <div class="letter-content">
+                <p>Langit tak berujar, namun segenap semesta diam-diam bersiap menyambut satu peristiwa agung, hadirnya engkau ke dunia. Dua puluh satu kali fajar mengulang makna mula, ketika tangismu pertama kali menggetarkan udara dan menyulut pelita di dada mereka yang menanti. Engkau hadir, tak sebagai jeda, namun sebagai larik puisi yang panjang, menyaru dalam tubuh mungil yang belum tahu akan luka, namun telah membawa terang.</p>
+                
+                <p>Sejak detik pertama itu, dunia mulai menjahitmu dengan benang-benang halus bernama waktu. Tubuh kecilmu, yang belum tahu luka dan duka, membawa terang yang tak disadari. Tahun demi tahun berjalan perlahan, menganyam keberadaanmu menjadi wujud yang terus berubah, namun tetap bernyawa, tetap bermakna. Engkau bertumbuh dari diam menjadi langkah, dari tangis menjadi tanya, dari pelukan menjadi perpisahan-perpisahan kecil yang diam-diam menguatkan.</p>
+                
+                <p>Sebab kelahiran tak pernah sederhana. Ia adalah kesepakatan rahasia antara langit, rahim, dan takdir bahwa engkau akan turun menapaki bumi ini, berjalan dengan kaki yang suatu hari akan lelah namun engkau tetap melangkah. Dua puluh satu tahun silam, langit membentangkan permadaninya dan bumi membuka dadanya, memberi ruang bagi hadirmu sebagai cahaya baru di antara ribuan gelap. Sejak itu, setiap pertambahan usia menjadi semacam peringatan lirih bahwa hidupmu bukan kebetulan, melainkan amanah yang diutus dengan maksud yang perlahan-lahan akan kaubaca.</p>
+                
+                <p>Perjalanan menuamu tidak selalu riuh. Ada getir yang tak sempat kau beri nama, ada lara yang lewat begitu saja tanpa sempat kau tangisi. Namun kau tetap berjalan. Menapaki hari-hari dengan sepatu yang kadang robek, kadang basah oleh hujan dan air mata, namun tak pernah kau tanggalkan. Usia dua puluh satu bukan sekadar angka, namun himpunan seluruh rintih yang tak kau bagi, dan harapan-harapan kecil yang kau lipat rapi di saku hati. Mungkin tahun ini, ulang tahunmu bukanlah pesta yang bising, melainkan penghormatan sunyi kepada dirimu sendiri, yang telah bertahan, meski dunia tak selalu memelukmu. Karena setiap nafas yang masih kau hirup adalah sajak yang belum selesai ditulis.</p>
+                
+                <p>Sebab hidup menjahitmu bukan hanya dengan suka cita, namun juga dengan luka, kecewa, kehilangan, dan gairah yang kadang tak terucap. Kau telah berenang di samudra kehilangan, menyelam dalam sunyi, dan berenang menuju harapan yang tak selalu hadir di garis pantai. Namun setiap gerakanmu, betapapun kecil dan gamangnya, adalah bentuk keberanian. Di usia ini, engkau tak harus tahu semua jawaban, cukup tahu bahwa melangkah meski tertatih adalah tanda bahwa kau belum menyerah.</p>
+                
+                <p>Perayaan pertambahan usiamu kini adalah semacam altar. Tempatmu bersandar sejenak, menunduk bukan dalam kalah, namun dalam syukur. Bukan untuk meminta lebih, namun untuk menyapa diri sendiri dan berkata, "Terima kasih karena tetap hidup, meski tak selalu mudah." Sebab hidup bukan tentang tahu ke mana arahmu, melainkan tentang keberanian untuk terus melaju meski cahaya seringkali samar dan tak pasti.</p>
+                
+                <p>Maka hari ini, biarkan dunia tetap gaduh, sementara kau menyepi dalam perjamuan batin yang hangat. Tiup lilinmu perlahan, bukan demi mengabulkan keinginan, namun demi penghormatan kepada diri yang telah melewati dua puluh satu musim kehidupan. Engkau masih ada, dan itu saja sudah cukup menjadi pujian paling luhur bagi waktu dan semesta. Peluk dirimu yang kini, sebagaimana langit pernah memelukmu di mula. Sebab ulang tahun bukan hanya tentang usia yang bertambah, namun tentang cahaya yang masih menyala, bahkan ketika gelap berkali-kali mencoba memadamkannya. dan engkau, tetap mulia.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    const letterContent = document.querySelector('.letter-content');
+    let isOpen = false;
+    let isScrolling = false;
+    let scrollSpeed = 30; 
+
+    envelope.addEventListener('click', function() {
+        if (!isOpen) {
+            
+            envelope.classList.add('open');
+            setTimeout(() => {
+                letter.classList.add('show');
+                
+                startScrollAnimation();
+            }, 300);
+            isOpen = true;
+        } else {
+            
+            stopScrollAnimation();
+            letter.classList.remove('show');
+            setTimeout(() => {
+                envelope.classList.remove('open');
+                
+                letterContent.style.transform = 'translateY(100%)';
+            }, 300);
+            isOpen = false;
+        }
+    });
+
+    function startScrollAnimation() {
+        
+        letterContent.style.transform = 'translateY(100%)';
+        
+        letterContent.style.animation = `scrollUp ${scrollSpeed}s linear forwards`;
+        isScrolling = true; 
+        
+        
+        letterContent.addEventListener('animationend', function() {
+            isScrolling = false; 
+            letterContent.style.animation = 'none';
+            letterContent.style.transform = 'translateY(0)';
+            letterContent.style.overflowY = 'auto'; 
+        }, {once: true});
+    }
+
+    function stopScrollAnimation() {
+       
+        letterContent.style.animation = 'none';
+        isScrolling = false;
+        letterContent.style.overflowY = 'hidden';
+    }
+
+    
+    letterContent.addEventListener('wheel', function(e) {
+        if (!isScrolling) { 
+            e.preventDefault();
+            this.scrollTop += e.deltaY;
+        }
+        
+    });
+    </script>
+</body>
+</html>
